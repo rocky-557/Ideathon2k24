@@ -23,7 +23,7 @@ def create_mask(image=None,zoom_lvl=None):
     cv2.imwrite('thresholded_image.jpg', mask)
     return mask
 
-m2=area_calc()
+m2=create_mask()
 
 
 # Count the number of white pixels (value = 255)
