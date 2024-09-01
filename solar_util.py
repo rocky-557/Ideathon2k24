@@ -5,7 +5,7 @@ import numpy as np
 import rasterio
 from rasterio.transform import rowcol
 
-def area_calc(image=None,zoom_lvl=None):
+def create_mask(image=None,zoom_lvl=None):
 
     image = cv2.imread('img.png')
 
