@@ -15,18 +15,69 @@
     <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #333;
             color: #fff;
             margin: 0;
             padding: 0;
         }
-        #map { height: 600px; margin: 10px; }
-        #coordinates, #results { margin: 10px; }
-        #croppedCanvasContainer { display: none; margin-top: 20px; }
-        #croppedCanvas { max-width: 100%; border: 1px solid #fff; }
-        button { background-color: #f5a623; border: none; color: white; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer; }
-        button:hover { background-color: #d68c2d; }
+        #map {
+            height: 600px;
+            margin: 20px auto;
+            width: 95%;
+            max-width: 1200px;
+        }
+        #coordinates, #results {
+            margin: 20px auto;
+            width: 95%;
+            max-width: 1200px;
+            padding: 10px;
+            background-color: #444;
+            border-radius: 8px;
+        }
+        #croppedCanvasContainer {
+            display: none;
+            margin: 20px auto;
+            width: 95%;
+            max-width: 1200px;
+            padding: 10px;
+            background-color: #444;
+            border-radius: 8px;
+        }
+        #croppedCanvas {
+            max-width: 100%;
+            border: 1px solid #fff;
+        }
+        button {
+            background-color: #f5a623;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 8px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #d68c2d;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+        h3 {
+            margin: 0;
+            padding: 0;
+            font-size: 24px;
+            color: #f5a623;
+        }
+        p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
@@ -82,12 +133,12 @@
                 var southWest = selectedBounds.getSouthWest();
                 var northEast = selectedBounds.getNorthEast();
                 var centerLatLng = selectedBounds.getCenter();
-                
+
                 document.getElementById('coordinates').innerHTML =
                     'Selected Area Coordinates:<br>' +
-                    'SouthWest: ' + southWest.lat + ', ' + southWest.lng + '<br>' +
-                    'NorthEast: ' + northEast.lat + ', ' + northEast.lng + '<br>' +
-                    'Center: ' + centerLatLng.lat + ', ' + centerLatLng.lng;
+                    'SouthWest: ' + southWest.lat.toFixed(5) + ', ' + southWest.lng.toFixed(5) + '<br>' +
+                    'NorthEast: ' + northEast.lat.toFixed(5) + ', ' + northEast.lng.toFixed(5) + '<br>' +
+                    'Center: ' + centerLatLng.lat.toFixed(5) + ', ' + centerLatLng.lng.toFixed(5);
 
                 map.fitBounds(selectedBounds);
             });
@@ -100,7 +151,6 @@
             }
 
             html2canvas(document.querySelector('#map'), { useCORS: true }).then(canvas => {
-                var mapSize = map.getSize();
                 var sw = map.latLngToContainerPoint(selectedBounds.getSouthWest());
                 var ne = map.latLngToContainerPoint(selectedBounds.getNorthEast());
                 var x = Math.min(sw.x, ne.x);
@@ -144,7 +194,7 @@
                     var response = JSON.parse(xhr.responseText);
                     document.getElementById('area').innerText = 'Area: ' + response.area.toFixed(2) + ' square meters';
                     document.getElementById('ghi').innerText = 'GHI: ' + response.ghi.toFixed(2) + ' KWh/sq.m/Day';
-                    document.getElementById('pv_output').innerText = 'PV Output: ' + response.pv_output.toFixed(2) + ' KWh/Day   (For an efficiency of 15 %)';
+                    document.getElementById('pv_output').innerText = 'PV Output: ' + response.pv_output.toFixed(2) + ' KWh/Day (For an efficiency of 15%)';
                 } else if (xhr.readyState === 4) {
                     alert('Error uploading image: ' + xhr.responseText);
                 }
